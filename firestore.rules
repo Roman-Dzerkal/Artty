@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles - public read, owner can write
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Artworks - public read, owner can write
+    match /artworks/{artworkId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == resource.data.owner_id;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.owner_id;
+    }
+
+    // Comments - signed-in users can read and create, owner can update/delete
+    match /comments/{commentId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == resource.data.owner_id;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.owner_id;
+    }
+
+    // Likes - signed-in users can read and create, owner can delete
+    match /likes/{likeId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == resource.data.owner_id;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.owner_id;
+    }
+
+    // Saves/Bookmarks - private to user
+    match /saves/{saveId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.owner_id;
+    }
+
+    // Following relationships - private to user
+    match /follows/{followId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.follower_id;
+    }
+
+    // Events - public read, authenticated users can create
+    match /events/{eventId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == resource.data.organizer_id;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.organizer_id;
+    }
+
+    // Event participants - signed-in users can read and participate
+    match /event_participants/{participantId} {
+      allow read: if request.auth != null;
+      allow create, delete: if request.auth != null && request.auth.uid == resource.data.user_id;
+    }
+
+    // Categories - public read, admin write
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false; // Only admin via server SDK
+    }
+  }
+}

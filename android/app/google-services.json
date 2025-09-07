@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "819413446346",
+    "project_id": "qw1fc4r89dqnxus9zuyejk7u8wiozy",
+    "storage_bucket": "qw1fc4r89dqnxus9zuyejk7u8wiozy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819413446346:android:b5f081fc985e9138624e33",
+        "android_client_info": {
+          "package_name": "com.nomiapps.artty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClNCLfeNCE1jyHpQxxj3feQWKA8y40Zfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
